@@ -6,7 +6,7 @@ queue *init(void)
 {
   queue *q = malloc(sizeof(queue));
   if (!q) {
-    printf("No Mem！\n");
+    fprintf(stderr, "no memory\n");
     return NULL;
   }
 
@@ -31,7 +31,7 @@ void push(queue *q, item_t data)
 
   new = malloc(sizeof(struct node));
   if(new == NULL){
-    printf("No Mem\n");
+    fprintf(stderr, "no memory\n");
   } else {
     new->item = data;
     new->next = NULL;
@@ -54,7 +54,7 @@ void pop(queue *q)
   struct node *tmp = NULL;
 
   if(empty(q)) {
-    printf("empty queue");
+    fprintf(stderr,"empty queue");
     return;
   }
 

@@ -46,8 +46,6 @@ static void usage()
 void opt_parse(int argc, char **argv)
 {
   int c;
-  //if(argc < 2)
-  //  usage();
 
   opt.loop = DEFAULT_LOOP;
   opt.interval = DEFAULT_LOOP; 

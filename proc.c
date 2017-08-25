@@ -20,8 +20,8 @@ static unsigned long get_flags(const char *path)
     unsigned long flags;
 
     if(!fp){
-        printf("Can't open file %s\n", path);
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "can't open file %s\n", path);
+        return 0;
     }
 
     while(fgets(line, sizeof(line), fp) != NULL) {
@@ -58,7 +58,7 @@ stat_t proc_scan(void)
     getpid_to_str(self_pid);
 
     if (!(proc_dir = opendir("/proc"))) {
-        printf("Can't opendir /proc\n");
+        fprintf(stderr, "can't opendir /proc\n");
         exit(EXIT_FAILURE);
     }
     while (ptr = readdir(proc_dir)) {
@@ -70,8 +70,8 @@ stat_t proc_scan(void)
          
         sprintf(fdinfo_path, "/proc/%s/fdinfo", ptr->d_name);
         if (!(fdinfo_dir = opendir(fdinfo_path))) {
-            printf("Can't opendir %s\n", fdinfo_path);
-            exit(EXIT_FAILURE);
+            fprintf(stderr, "can't opendir %s\n", fdinfo_path);
+            continue;
         }
         while (ptr = readdir(fdinfo_dir)) {
             if(strcmp(ptr->d_name, ".") == 0 || strcmp(ptr->d_name, "..") == 0){
@@ -79,7 +79,9 @@ stat_t proc_scan(void)
             }
             sprintf(file_path, "%s/%s", fdinfo_path, ptr->d_name);
             flags = get_flags(file_path);
-            if(flags & O_DIRECT) {
+            if(flags == 0) {
+                continue;
+            } else if(flags & O_DIRECT) {
                 info.direct++;
             } else if(flags & O_SYNC){
                 info.sync++;

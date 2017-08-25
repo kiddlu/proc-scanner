@@ -4,6 +4,7 @@
 
 #ifndef _QUEQUE_H_
 #define _QUEQUE_H_
+
 #include <stdbool.h>
 
 #include "proc.h"
